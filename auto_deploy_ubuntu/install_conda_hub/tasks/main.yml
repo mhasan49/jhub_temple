@@ -1,0 +1,37 @@
+---
+  - name: Create conda environment 
+    become_user: "{{ lookup('env','USER') }}"
+    shell: |
+      conda create --name hupyterhub2 python=3.8
+    args:
+     #chdir: '{{playbook_dir}}/jupyterhub'
+     executable: /bin/bash
+    register: out
+  - debug: var=out.stdout_lines
+
+  - name: Installing 
+    become_user: "{{ lookup('env','USER') }}"
+    shell: |
+      conda activate jupyterhub2
+      
+      conda install -c conda-forge jupyterhub
+            
+    args:
+   #  chdir: '{{playbook_dir}}/jupyterhub'
+     executable: /bin/bash
+    register: out
+  - debug: var=out.stdout_lines
+
+#  - name: conda install jupyterhub
+#    become_user: "{{ lookup('env','USER') }}"
+#    shell: |
+#      conda install -c conda-forge jupyterhub
+#      
+#    args:
+#     executable: /bin/bash
+#    register: out
+#  - debug: var=out.stdout_lines
+
+
+ 
+

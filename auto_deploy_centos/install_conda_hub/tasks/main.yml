@@ -1,0 +1,107 @@
+---
+#  - name: Downloading and Installing conda 
+#    become_user: "{{ lookup('env','USER') }}"
+#    shell: |
+#      rm -rf ~/miniconda
+#      
+#      rm -rf ~/.condarc ~/.conda ~/.continuum
+#    args:
+#     #chdir: '{{playbook_dir}}/jupyterhub'
+#     executable: /bin/bash
+#    register: out
+#  - debug: var=out.stdout_lines 
+
+  - name: Install prerequisites
+    yum:
+      name: "{{ packages }}"      
+    vars:
+      packages:
+        - wget
+        - conda
+      state: latest
+      update_cache: yes
+
+     
+
+#  - name: Downloading and Installing conda 
+#    become_user: "{{ lookup('env','USER') }}"
+#    shell: |
+#      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+#    args:
+#     #chdir: '{{playbook_dir}}/jupyterhub'
+#     executable: /bin/bash
+#    register: out
+#  - debug: var=out.stdout_lines
+
+#  - name: conda init bash env 
+#    become_user: "{{ lookup('env','USER') }}"
+#    shell: |
+#      chmod 777 '{{playbook_dir}}/install_conda_hub/tasks/run.sh'
+#      
+#      '{{playbook_dir}}/install_conda_hub/tasks/run.sh'
+#    args:
+#     chdir: '{{playbook_dir}}'
+#     executable: /bin/bash
+#    register: out
+#  - debug: var=out.stdout_lines
+#  
+  
+
+#  - name:  conda init bash env 
+#    become_user: "{{ lookup('env','USER') }}"
+#    shell: |
+#      conda init bash
+#      
+#    args:
+#     #chdir: '{{playbook_dir}}/jupyterhub'
+#     executable: /bin/bash
+#    register: out
+#  - debug: var=out.stdout_lines
+
+
+
+  - name: Create conda environment jupyterhubclear 
+    become_user: "{{ lookup('env','USER') }}"
+    shell: |
+      conda config --set auto_activate_base false
+      
+      conda deactivate
+      
+      conda  env remove  --name=jupyterhub
+      
+      conda create --name jupyterhub python=3.8 -y
+    args:
+     executable: /bin/bash
+    register: out
+  - debug: var=out.stdout_lines
+
+#  - name: Downloading and Installing conda 
+#    become_user: "{{ lookup('env','USER') }}"
+#    shell: |
+#      chmod 777 '{{playbook_dir}}/install_conda_hub/tasks/install.sh'
+#      
+#      sh '{{playbook_dir}}/install_conda_hub/tasks/install.sh'
+#    args:
+#     chdir: '{{playbook_dir}}'
+#     executable: /bin/bash
+#    register: out
+#  - debug: var=out.stdout_lines
+  
+
+  - name: Installing jupyterhub 
+    become_user: "{{ lookup('env','USER') }}"
+    shell: |
+      conda init bash 
+       
+      conda activate jupyterhub
+      
+      conda install -c conda-forge jupyterhub -y
+            
+    args:
+     executable: /bin/bash
+    register: out
+  - debug: var=out.stdout_lines
+  
+
+
+

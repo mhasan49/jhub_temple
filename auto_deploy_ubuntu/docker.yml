@@ -1,0 +1,12 @@
+---
+- name: Playbook to run apt install commands
+  hosts: all
+  become: true
+  gather_facts: yes
+  #pre_task:
+  
+  roles:
+    - install_docker
+    - install_portainer
+
+...

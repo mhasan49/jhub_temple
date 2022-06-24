@@ -1,0 +1,15 @@
+---
+- name: Playbook to run apt install commands
+  hosts: all
+  become: true
+  gather_facts: yes
+  #pre_task:
+  
+  roles:
+#     - install_conda_hub
+    - install_script_hub
+#    - install_pip_hub
+#    - install_docker
+#    - install_portainer
+    - get_config
+...

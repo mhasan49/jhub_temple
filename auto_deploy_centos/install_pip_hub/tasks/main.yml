@@ -1,0 +1,71 @@
+---
+  - name: Just get information about the juputerhub repository whether or not it has already been cloned locally
+    become_user: "{{ lookup('env','USER') }}"
+    ansible.builtin.git:
+      repo: 'https://github.com/jupyterhub/jupyterhub'
+      dest: '{{playbook_dir}}/jupyterhub'
+      clone: yes
+      update: yes
+    register: out
+  - debug: var=out.stdout_lines
+  
+#  - name: Installing configurable-http-proxy using npm
+#    become_user: "{{ lookup('env','USER') }}"
+#    shell: |
+#      sudo npm install -g configurable-http-proxy
+#    args:
+#     chdir: '{{playbook_dir}}/jupyterhub'
+#     executable: /bin/bash
+#    register: out
+#  - debug: var=out.stdout_lines
+
+  - name: Creating python3 virtual env 
+    become_user: "{{ lookup('env','USER') }}"
+    shell: |
+      python3 -m venv '{{playbook_dir}}/jupyterhub/venv'
+      
+      python3 -m pip install --upgrade pip
+    args:
+     executable: /bin/bash
+    register: out
+  - debug: var=out.stdout_lines
+
+  - name: Install dev-requirements.txt in virtual env 
+    become_user: "{{ lookup('env','USER') }}"
+    pip:
+      requirements: '{{playbook_dir}}/jupyterhub/dev-requirements.txt'
+      virtualenv: '{{playbook_dir}}/jupyterhub/venv'
+    register: out
+  - debug: var=out.stdout_lines
+
+  - name: Install requirements.txt in virtual env 
+    become_user: "{{ lookup('env','USER') }}"
+    pip:
+      requirements: '{{playbook_dir}}/jupyterhub/requirements.txt'
+      virtualenv: '{{playbook_dir}}/jupyterhub/venv'
+    register: out
+  - debug: var=out.stdout_lines
+
+#  - name: install hub
+#    become_user: "{{ lookup('env','USER') }}"
+#    pip:
+#      name: jupyterhub
+#      state: latest
+#      virtualenv: '{{playbook_dir}}/jupyterhub/venv'
+#      virtualenv_site_packages: yes
+#    register: out
+#  - debug: var=out.stdout_lines
+
+  - name: Installing jupyterhub
+    become_user: "{{ lookup('env','USER') }}"
+    shell: |
+      python3 -m pip install --editable .
+    args:
+     chdir: '{{playbook_dir}}'
+     executable: /bin/bash
+    register: out
+  - debug: var=out.stdout_lines
+
+
+
+

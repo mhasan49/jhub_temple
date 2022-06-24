@@ -1,0 +1,56 @@
+---
+  - name: Install prerequisites
+    yum:
+      name: "{{ packages }}"      
+    vars:
+      packages:
+        - yum-utils
+      state: latest
+      update_cache: yes
+
+  - name: add stable repo 
+    yum_repository:
+      name: docker-ce
+      description: external_repo
+      baseurl: https://download.docker.com/linux/centos/$releasever/$basearch/stable
+      gpgcheck: yes
+      enabled: yes
+
+#  - name: adding docker repo
+#    become_user: "{{ lookup('env','USER') }}"
+#    shell: |
+#      yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo                                                       
+#    args:
+#     executable: /bin/bash
+#    register: out
+#  - debug: var=out.stdout_lines
+
+  - name: install docker 
+    yum:
+      name: 
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-compose-plugin
+      update_cache: yes
+
+  - name: adding docker repo
+    become_user: "{{ lookup('env','USER') }}"
+    shell: |
+      systemctl enable docker
+      
+      systemctl start docker
+      
+      systemctl status docker
+      
+#      docker run hello-world
+                                                            
+    args:
+     executable: /bin/bash
+    register: out
+  - debug: var=out.stdout_lines      
+
+#  - name: add userpermissions
+#    shell: "usermod -aG docker {{ lookup('env','USER') }}"
+
+

@@ -1,0 +1,7 @@
+[master]
+localhost    ansible_connection=local
+
+[compute]
+c01
+c02
+c03
