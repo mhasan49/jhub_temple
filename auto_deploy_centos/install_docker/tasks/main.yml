@@ -8,22 +8,22 @@
       state: latest
       update_cache: yes
 
-  - name: add stable repo 
-    yum_repository:
-      name: docker-ce
-      description: external_repo
-      baseurl: https://download.docker.com/linux/centos/$releasever/$basearch/stable
-      gpgcheck: yes
-      enabled: yes
+#  - name: add stable repo 
+#    yum_repository:
+#      name: docker-ce
+#     description: external_repo
+#     baseurl: https://download.docker.com/linux/centos/$releasever/$basearch/stable
+#     gpgcheck: yes
+#      enabled: yes
 
-#  - name: adding docker repo
-#    become_user: "{{ lookup('env','USER') }}"
-#    shell: |
-#      yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo                                                       
-#    args:
-#     executable: /bin/bash
-#    register: out
-#  - debug: var=out.stdout_lines
+  - name: adding docker repo
+    become_user: "{{ lookup('env','USER') }}"
+    shell: |
+      yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo                                                       
+    args:
+     executable: /bin/bash
+    register: out
+  - debug: var=out.stdout_lines
 
   - name: install docker 
     yum:
@@ -43,7 +43,7 @@
       
       systemctl status docker
       
-#      docker run hello-world
+      docker pull jupyterhub/singleuser 
                                                             
     args:
      executable: /bin/bash
