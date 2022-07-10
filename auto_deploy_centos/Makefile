@@ -1,9 +1,9 @@
 
-all: software install ping
+all: software install_jupyterhub docker ping
 
 software:
 
-	yum update -y
+#	yum update -y
 	yum install epel-release -y
 	yum install ansible -y
 	yum install python3 -y
@@ -26,10 +26,10 @@ ping:
 
 
 clean:
-	rm inventory *.cfg
+#	rm inventory *.cfg
 
 remove:
-	
-	yum remove epel-release -y
-	yum remove ansible -y
-	yum remove python3 -y
+	rm -r jupyterhub
+#	yum remove epel-release -y
+#	yum remove ansible -y
+#	yum remove python3 -y
