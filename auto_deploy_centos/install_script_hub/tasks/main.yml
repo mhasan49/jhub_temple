@@ -39,8 +39,8 @@
   - name: Clone jupyterhub
     become_user: "{{ lookup('env','USER') }}"
     shell: |
-#      git clone https://github.com/jupyterhub/jupyterhub
       git clone https://github.com/mhasan49/jupyterhub.git
+    
     args:
      #chdir: '{{playbook_dir}}/jupyterhub'
      executable: /bin/bash
